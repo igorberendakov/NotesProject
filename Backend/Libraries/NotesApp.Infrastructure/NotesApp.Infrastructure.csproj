@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -12,12 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libraries\NotesApp.Domain\NotesApp.Domain.csproj" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Abstractions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-    <Folder Include="Abstractions\" />
+    <ProjectReference Include="..\NotesApp.Domain\NotesApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>
