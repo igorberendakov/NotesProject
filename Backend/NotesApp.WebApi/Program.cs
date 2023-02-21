@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using NotesApp.Infrastructure.Extentions;
 
 namespace NotesApp.WebApi
 {
@@ -10,9 +12,10 @@ namespace NotesApp.WebApi
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddNotesDbContext(builder.Configuration.GetConnectionString("NotesDbConnection")!);
 
             var app = builder.Build();
 
@@ -27,10 +30,10 @@ namespace NotesApp.WebApi
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
         }
+
     }
 }

@@ -2,7 +2,10 @@
 
 namespace NotesApp.Domain.Entities
 {
-    internal class Notification : IEntity
+    /// <summary>
+    /// Напоминание.
+    /// </summary>
+    public class Notification : IEntity
     {
         /// <summary>
         /// Идентификатор напоминания.
@@ -19,6 +22,6 @@ namespace NotesApp.Domain.Entities
         /// <summary>
         /// Заметка.
         /// </summary>
-        public virtual Note? Note { get; set; }
+        public virtual Note Note { get; set; } = null!;
     }
 }
