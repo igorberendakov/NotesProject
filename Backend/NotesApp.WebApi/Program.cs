@@ -34,6 +34,5 @@ namespace NotesApp.WebApi
 
             app.Run();
         }
-
     }
 }
