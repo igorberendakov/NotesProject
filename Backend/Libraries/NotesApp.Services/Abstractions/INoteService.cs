@@ -12,7 +12,7 @@ namespace NotesApp.Services.Abstractions
         /// <summary>
         /// Создание новой заметки.
         /// </summary>
-        /// <param name="noteCreateDto">DTO объект с необходимыми для создвния заметки данными.</param>
+        /// <param name="noteCreateDto">Модель заметки с необходимыми для создания заметки данными.</param>
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <returns>Идентификатор созданной заметки.</returns>
         Task<Guid> CreateNoteAsync(NoteCreateDto noteCreateDto, CancellationToken cancellationToken = default);

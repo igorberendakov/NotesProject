@@ -21,6 +21,8 @@ namespace NotesApp.Infrastructure.Extentions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Note>, GenericRepository<Note>>();
+            services.AddScoped<IRepository<Tag>, GenericRepository<Tag>>();
+            services.AddScoped<IRepository<Notification>, GenericRepository<Notification>>();
 
             return services;
         }

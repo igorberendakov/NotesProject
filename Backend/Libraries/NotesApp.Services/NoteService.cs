@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NotesApp.Domain.Abstractions;
 using NotesApp.Domain.Entities;
@@ -43,9 +42,7 @@ namespace NotesApp.Services
 
         public IQueryable<NoteViewDto> GetQueryable()
         {
-            var entities = _repository.GetQueryable()
-                .Include(x => x.NoteTags)
-                .ThenInclude(x => x.Tag);
+            var entities = _repository.GetQueryable();
 
             return entities.UseAsDataSource(_mapper.ConfigurationProvider).For<NoteViewDto>();
         }

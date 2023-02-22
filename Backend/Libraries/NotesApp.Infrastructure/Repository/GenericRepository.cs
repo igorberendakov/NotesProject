@@ -21,7 +21,7 @@ namespace NotesApp.Infrastructure.Repository
         {
             await _dbSet.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно добавлена.", nameof(TEntity), entity.Id);
+            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно добавлен(а/о).", entity.GetType().Name, entity.Id);
 
             return entity.Id;
         }
@@ -30,7 +30,7 @@ namespace NotesApp.Infrastructure.Repository
         {
             _dbSet.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно удалена.", nameof(TEntity), entity.Id);
+            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно удален(а/о).", entity.GetType().Name, entity.Id);
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -52,14 +52,14 @@ namespace NotesApp.Infrastructure.Repository
         {
             _dbSet.Update(entity);
             var result = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-            
+
             if (!result)
             {
-                _logger.LogWarning("Попытка изменить {Entity} с идентификатором {EntityId} не привела к изменениям данных.", nameof(TEntity), entity.Id);
+                _logger.LogWarning("Попытка изменить {Entity} с идентификатором {EntityId} не привела к изменениям данных.", entity.GetType().Name.ToLower(), entity.Id);
             }
             else
             {
-                _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно изменена.", nameof(TEntity), entity.Id);
+                _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно изменен(а/о).", entity.GetType().Name, entity.Id);
             }
 
             return result;

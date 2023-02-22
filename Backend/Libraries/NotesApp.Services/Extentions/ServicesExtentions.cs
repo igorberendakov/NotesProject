@@ -8,6 +8,8 @@ namespace NotesApp.Services.Extentions
         public static IServiceCollection AddServices(this IServiceCollection services) 
         {
             services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             return services;
         }

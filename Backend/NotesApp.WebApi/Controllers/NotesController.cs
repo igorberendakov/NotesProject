@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using NotesApp.Infrastructure.Dtos;
 using NotesApp.Services.Abstractions;
@@ -16,11 +16,26 @@ namespace NotesApp.WebApi.Controllers
             _service = noteService;
         }
 
+        /// <summary>
+        /// Получение списка заметок, поддерживающего синтаксис запросов Odata.
+        /// </summary>
+        /// <returns>Список заметок, поддерживающий запросы Odata.</returns>
         [HttpGet]
         [EnableQuery]
-        public IQueryable<NoteViewDto> Get()
+        public ActionResult<IQueryable<NoteViewDto>> GetAsync()
         {
-            return _service.GetQueryable();
+            return Ok(_service.GetQueryable());
+        }
+
+        /// <summary>
+        /// Создание новой заметки.
+        /// </summary>
+        /// <param name="noteCreateDto">Модель заметки, содержащая необходимые для создания заметки данные.</param>
+        /// <returns>Идентификатор созданной заметки.</returns>
+        [HttpPost]
+        public async Task<ActionResult<Guid>> PostAsync([FromBody] NoteCreateDto noteCreateDto, CancellationToken cancellationToken = default)
+        {
+            return Ok(await _service.CreateNoteAsync(noteCreateDto, cancellationToken));
         }
     }
 }

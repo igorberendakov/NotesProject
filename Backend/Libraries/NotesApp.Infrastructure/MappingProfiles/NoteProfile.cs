@@ -13,8 +13,14 @@ namespace NotesApp.Infrastructure.MappingProfiles
                 dest => dest.Tags,
                 opt => opt.MapFrom(src => src.NoteTags.Select(x => x.Tag)));
             CreateMap<NoteViewDto, Note>();
-            CreateMap<NoteCreateDto, Note>();
-            CreateMap<NoteUpdateDto, Note>();
+            CreateMap<NoteCreateDto, Note>()
+                .ForMember(
+                dest => dest.NoteTags,
+                opt => opt.MapFrom(src => src.TagGuids != null ? src.TagGuids.Select(x => new NoteTag { TagId = x }) : null));
+            CreateMap<NoteUpdateDto, Note>()
+                .ForMember(
+                dest => dest.NoteTags,
+                opt => opt.MapFrom(src => src.TagGuids != null ? src.TagGuids.Select(x => new NoteTag { TagId = x }) : null));
         }
     }
 }
