@@ -52,7 +52,7 @@ namespace NotesApp.WebApi.Controllers
                 return Ok();
             }
 
-            return NotFound("Заметка с таким id не найдена.");
+            return NotFound("Тэг с таким id не найден.");
         }
         /// <summary>
         /// Удаление тэга.
