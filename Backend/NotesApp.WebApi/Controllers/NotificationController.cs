@@ -15,7 +15,6 @@ namespace NotesApp.WebApi.Controllers
         {
             _service = noteService;
         }
-
         /// <summary>
         /// Получение списка заметок, поддерживающего синтаксис запросов Odata.
         /// </summary>
@@ -26,7 +25,6 @@ namespace NotesApp.WebApi.Controllers
         {
             return Ok(_service.GetQueryable());
         }
-
         /// <summary>
         /// Создание нового напоминания.
         /// </summary>
@@ -35,7 +33,7 @@ namespace NotesApp.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> PostAsync([FromBody] NotificationCreateDto notificationCreateDto, CancellationToken cancellationToken = default)
         {
-            return Ok(await _service.CreateNoteAsync(notificationCreateDto, cancellationToken));
+            return Ok(await _service.CreateNotificationAsync(notificationCreateDto, cancellationToken));
         }
     }
 }

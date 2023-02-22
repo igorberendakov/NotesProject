@@ -22,18 +22,18 @@ namespace NotesApp.Services
             _mapper = mapper;
         }
 
-        public async Task<Guid> CreateNoteAsync(NotificationCreateDto notificationCreateDto, CancellationToken cancellationToken = default)
+        public async Task<Guid> CreateNotificationAsync(NotificationCreateDto notificationCreateDto, CancellationToken cancellationToken = default)
         {
             return await _repository.CreateAsync(_mapper.Map<Notification>(notificationCreateDto), cancellationToken);
         }
 
-        public async Task<bool> DeleteNoteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteNotificationAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var entity = await _repository.GetByIdAsync(id, cancellationToken);
 
             if (entity == null)
             {
-                _logger.LogWarning("Попытка удаления несуществующей заметки");
+                _logger.LogWarning("Попытка удаления несуществующего напоминания");
 
                 return false;
             }
@@ -48,7 +48,7 @@ namespace NotesApp.Services
             return entities.UseAsDataSource(_mapper.ConfigurationProvider).For<NotificationViewDto>();
         }
 
-        public async Task<bool> UpdateNoteAsync(NotificationUpdateDto notificationUpdateDto, CancellationToken cancellationToken = default)
+        public async Task<bool> UpdateNotificationAsync(NotificationUpdateDto notificationUpdateDto, CancellationToken cancellationToken = default)
         {
             var entity = await _repository.GetByIdAsync(notificationUpdateDto.Id, cancellationToken);
 

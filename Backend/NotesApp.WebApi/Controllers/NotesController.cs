@@ -15,7 +15,6 @@ namespace NotesApp.WebApi.Controllers
         {
             _service = noteService;
         }
-
         /// <summary>
         /// Получение списка заметок, поддерживающего синтаксис запросов Odata.
         /// </summary>
@@ -26,7 +25,6 @@ namespace NotesApp.WebApi.Controllers
         {
             return Ok(_service.GetQueryable());
         }
-
         /// <summary>
         /// Создание новой заметки.
         /// </summary>
