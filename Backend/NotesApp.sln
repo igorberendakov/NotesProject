@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotesApp.WebApi", "NotesApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotesApp.Infrastructure", "Libraries\NotesApp.Infrastructure\NotesApp.Infrastructure.csproj", "{4818701B-8352-4214-A2FF-4CA7E665BA65}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotesApp.Services", "Libraries\NotesApp.Services\NotesApp.Services.csproj", "{EBAB5B5E-E59E-4EDF-AC25-392F780CD8EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4818701B-8352-4214-A2FF-4CA7E665BA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4818701B-8352-4214-A2FF-4CA7E665BA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4818701B-8352-4214-A2FF-4CA7E665BA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBAB5B5E-E59E-4EDF-AC25-392F780CD8EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBAB5B5E-E59E-4EDF-AC25-392F780CD8EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBAB5B5E-E59E-4EDF-AC25-392F780CD8EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBAB5B5E-E59E-4EDF-AC25-392F780CD8EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

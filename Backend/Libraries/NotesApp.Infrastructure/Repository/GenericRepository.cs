@@ -17,49 +17,49 @@ namespace NotesApp.Infrastructure.Repository
             _logger = logger;
         }
 
-        public async Task<Guid> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<Guid> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             await _dbSet.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно добавлена.", nameof(TEntity), entity.Id);
+            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно добавлен(а/о).", entity.GetType().Name, entity.Id);
 
             return entity.Id;
         }
 
-        public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             _dbSet.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно удалена.", nameof(TEntity), entity.Id);
+            _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно удален(а/о).", entity.GetType().Name, entity.Id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public IQueryable<TEntity> GetQueryable()
+        public virtual IQueryable<TEntity> GetQueryable()
         {
             return _dbSet;
         }
 
-        public async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             _dbSet.Update(entity);
             var result = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
-            
+
             if (!result)
             {
-                _logger.LogWarning("Попытка изменить {Entity} с идентификатором {EntityId} не привела к изменениям данных.", nameof(TEntity), entity.Id);
+                _logger.LogWarning("Попытка изменить {Entity} с идентификатором {EntityId} не привела к изменениям данных.", entity.GetType().Name.ToLower(), entity.Id);
             }
             else
             {
-                _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно изменена.", nameof(TEntity), entity.Id);
+                _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно изменен(а/о).", entity.GetType().Name, entity.Id);
             }
 
             return result;

@@ -18,7 +18,7 @@ namespace NotesApp.Domain.Entities
         /// <summary>
         /// Привязка ко времени.
         /// </summary>
-        public DateTime? TimeBinding { get; set; }
+        public DateTime TimeBinding { get; set; }
         /// <summary>
         /// Заметка.
         /// </summary>
