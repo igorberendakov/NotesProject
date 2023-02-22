@@ -17,34 +17,6 @@ namespace NotesApp.Infrastructure.DbConfiguration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var tags = new List<Tag>
-            {
-                new Tag
-                {
-                    Id = Guid.NewGuid(),
-                    Text = "TestTag"
-                }
-            };
-
-            var notes = new List<Note>
-            {
-                new Note
-                {
-                    Id = Guid.NewGuid(),
-                    Text = "TestNote",
-                    Title= "TestTitle"
-                }
-            };
-
-            var noteTags = new List<NoteTag>
-            {
-                new NoteTag
-                {
-                    NoteId = notes.First().Id,
-                    TagId = tags.First().Id,
-                }
-            };
-
             modelBuilder.Entity<Tag>(entity =>
             {
                 entity.ToTable("tag");
@@ -54,19 +26,20 @@ namespace NotesApp.Infrastructure.DbConfiguration
                     .HasColumnName("id");
                 entity.Property(x => x.Text)
                     .HasColumnName("text");
-                entity.HasData(tags);
             });
 
             modelBuilder.Entity<NoteTag>(entity =>
             {
                 entity.ToTable("note_tag");
-                entity.HasNoKey();
+                entity.HasKey(x => new { x.NoteId, x.TagId });
                 entity.HasIndex(x => new { x.NoteId, x.TagId })
                     .IsUnique();
                 entity.HasOne(x => x.Tag)
-                    .WithMany();
+                    .WithMany()
+                    .HasForeignKey(x => x.TagId);
                 entity.HasOne(x => x.Note)
-                    .WithMany();
+                    .WithMany(x => x.NoteTags)
+                    .HasForeignKey(x => x.NoteId);
                 entity.Property(x => x.NoteId)
                     .HasColumnName("note_id");
                 entity.Property(x => x.TagId)
@@ -98,7 +71,8 @@ namespace NotesApp.Infrastructure.DbConfiguration
                 entity.Property(x => x.TimeBinding)
                     .HasColumnName("time_binding");
                 entity.HasOne(x => x.Note)
-                    .WithMany();
+                    .WithMany()
+                    .HasForeignKey(x => x.NoteId);
             });
         }
     }

@@ -3,7 +3,7 @@
     public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
-        /// Получение queryableсписка сущностей.
+        /// Получение queryable списка сущностей.
         /// </summary>
         /// <returns>Queryable список сущностей.</returns>
         IQueryable<TEntity> GetQueryable();

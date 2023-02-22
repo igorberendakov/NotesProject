@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using NotesApp.Infrastructure.Extentions;
+using NotesApp.Services.Extentions;
 
 namespace NotesApp.WebApi
 {
@@ -11,11 +13,15 @@ namespace NotesApp.WebApi
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddOData(options => options.EnableQueryFeatures());
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddNotesDbContext(builder.Configuration.GetConnectionString("NotesDbConnection")!);
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 

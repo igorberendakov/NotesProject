@@ -78,11 +78,6 @@ namespace NotesApp.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "tag",
-                columns: new[] { "id", "text" },
-                values: new object[] { new Guid("dc5e1634-e8d6-4d4a-b644-4b1fe400003e"), "TestTag" });
-
             migrationBuilder.CreateIndex(
                 name: "ix_note_tag_note_id_tag_id",
                 table: "note_tag",
