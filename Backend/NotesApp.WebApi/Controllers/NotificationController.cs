@@ -5,20 +5,18 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class NotificationController : ControllerBase
+    public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _service;
-
-        public NotificationController(INotificationService noteService)
+        
+        public NotificationsController(INotificationService noteService)
         {
             _service = noteService;
         }
         /// <summary>
-        /// Получение списка заметок, поддерживающего синтаксис запросов Odata.
+        /// Получение списка напоминаний, поддерживающего синтаксис запросов Odata.
         /// </summary>
-        /// <returns>Список заметок, поддерживающий запросы Odata.</returns>
+        /// <returns>Список напоминаний, поддерживающий запросы Odata.</returns>
         [HttpGet]
         [EnableQuery]
         public ActionResult<IQueryable<NotificationViewDto>> GetAsync()
@@ -29,11 +27,52 @@ namespace NotesApp.WebApi.Controllers
         /// Создание нового напоминания.
         /// </summary>
         /// <param name="notificationCreateDto">Модель напоминания, содержащая необходимые для создания напоминания данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <returns>Идентификатор созданного напоминания.</returns>
         [HttpPost]
         public async Task<ActionResult<Guid>> PostAsync([FromBody] NotificationCreateDto notificationCreateDto, CancellationToken cancellationToken = default)
         {
             return Ok(await _service.CreateNotificationAsync(notificationCreateDto, cancellationToken));
+        }
+        /// <summary>
+        /// Изменение данных напоминания.
+        /// </summary>
+        /// <param name="notificationUpdateDto">Модель напоминания, содержащая необходимые для изменения данных напоминания данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Напоминание успешно изменено.</response>
+        /// <response code="404">Напоминание с данным идентификатором не найдено.</response>
+        [Route("[controller]/Put")]
+        [HttpPut]
+        public async Task<ActionResult> PutAsync([FromBody] NotificationUpdateDto notificationUpdateDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.UpdateNotificationAsync(notificationUpdateDto, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound("Напоминание с таким id не найдено.");
+        }
+        /// <summary>
+        /// Удаление напоминания.
+        /// </summary>
+        /// <param name="id">Идентификатор напоминания.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Напоминание успешно удалено.</response>
+        /// <response code="204">Напоминание не существует.</response>
+        [Route("[controller]/Delete")]
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.DeleteNotificationAsync(id, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NoContent();
         }
     }
 }

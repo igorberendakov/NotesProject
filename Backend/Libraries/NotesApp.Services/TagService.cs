@@ -37,6 +37,8 @@ namespace NotesApp.Services
                 return false;
             }
 
+            await _repository.DeleteAsync(entity, cancellationToken);
+
             return true;
         }
 

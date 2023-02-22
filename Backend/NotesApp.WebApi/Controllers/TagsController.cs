@@ -5,8 +5,6 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class TagsController : ControllerBase
     {
         private readonly ITagService _service;
@@ -29,11 +27,52 @@ namespace NotesApp.WebApi.Controllers
         /// Создание нового тэга.
         /// </summary>
         /// <param name="tagCreateDto">Модель тэга, содержащая необходимые для создания тэга данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <returns>Идентификатор созданного тэга.</returns>
         [HttpPost]
         public async Task<ActionResult<Guid>> PostAsync([FromBody] TagCreateDto tagCreateDto, CancellationToken cancellationToken = default)
         {
             return Ok(await _service.CreateTagAsync(tagCreateDto, cancellationToken));
+        }
+        /// <summary>
+        /// Изменение данных тэга.
+        /// </summary>
+        /// <param name="tagUpdateDto">Модель тэга, содержащая необходимые для изменения тэга данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно изменен.</response>
+        /// <response code="404">Тэг с данным идентификатором не найден.</response>
+        [Route("[controller]/Put")]
+        [HttpPut]
+        public async Task<ActionResult> PutAsync([FromBody] TagUpdateDto tagUpdateDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.UpdateTagAsync(tagUpdateDto, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound("Тэг с таким id не найден.");
+        }
+        /// <summary>
+        /// Удаление тэга.
+        /// </summary>
+        /// <param name="id">Идентификатор тэга.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно удалена.</response>
+        /// <response code="204">Тэг не существует.</response>
+        [Route("[controller]/Delete")]
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.DeleteTagAsync(id, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NoContent();
         }
     }
 }
