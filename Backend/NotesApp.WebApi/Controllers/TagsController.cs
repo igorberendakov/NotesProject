@@ -35,5 +35,43 @@ namespace NotesApp.WebApi.Controllers
         {
             return Ok(await _service.CreateTagAsync(tagCreateDto, cancellationToken));
         }
+        /// <summary>
+        /// Изменение данных тэга.
+        /// </summary>
+        /// <param name="tagUpdateDto">Модель тэга, содержащая необходимые для изменения тэга данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно изменен.</response>
+        /// <response code="404">Тэг с данным идентификатором не найден.</response>
+        [HttpPut]
+        public async Task<ActionResult> PutAsync([FromBody] TagUpdateDto tagUpdateDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.UpdateTagAsync(tagUpdateDto, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound("Заметка с таким id не найдена.");
+        }
+        /// <summary>
+        /// Удаление тэга.
+        /// </summary>
+        /// <param name="id">Идентификатор тэга.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно удалена.</response>
+        /// <response code="204">Тэг не существует.</response>
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.DeleteTagAsync(id, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NoContent();
+        }
     }
 }
