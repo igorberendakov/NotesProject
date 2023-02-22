@@ -5,8 +5,6 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class NotesController : ControllerBase
     {
         private readonly INoteService _service;
@@ -44,6 +42,7 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Заметка успешно изменена.</response>
         /// <response code="404">Заметка с данным идентификатором не найдена.</response>
+        [Route("[controller]/Put")]
         [HttpPut]
         public async Task<ActionResult> PutAsync([FromBody] NoteUpdateDto noteUpdateDto, CancellationToken cancellationToken = default)
         {
@@ -63,6 +62,7 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Заметка успешно удалена.</response>
         /// <response code="204">Заметка не существует.</response>
+        [Route("[controller]/Delete")]
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
         {

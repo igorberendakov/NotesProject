@@ -5,13 +5,11 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class NotificationController : ControllerBase
+    public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _service;
-
-        public NotificationController(INotificationService noteService)
+        
+        public NotificationsController(INotificationService noteService)
         {
             _service = noteService;
         }
@@ -29,6 +27,7 @@ namespace NotesApp.WebApi.Controllers
         /// Создание нового напоминания.
         /// </summary>
         /// <param name="notificationCreateDto">Модель напоминания, содержащая необходимые для создания напоминания данные.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <returns>Идентификатор созданного напоминания.</returns>
         [HttpPost]
         public async Task<ActionResult<Guid>> PostAsync([FromBody] NotificationCreateDto notificationCreateDto, CancellationToken cancellationToken = default)
@@ -42,6 +41,7 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Напоминание успешно изменено.</response>
         /// <response code="404">Напоминание с данным идентификатором не найдено.</response>
+        [Route("Put")]
         [HttpPut]
         public async Task<ActionResult> PutAsync([FromBody] NotificationUpdateDto notificationUpdateDto, CancellationToken cancellationToken = default)
         {
@@ -61,6 +61,7 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Напоминание успешно удалено.</response>
         /// <response code="204">Напоминание не существует.</response>
+        [Route("Delete")]
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
         {

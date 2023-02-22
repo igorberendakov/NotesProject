@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
+using NotesApp.Infrastructure.Dtos;
 using NotesApp.Infrastructure.Extentions;
 using NotesApp.Services.Extentions;
+using NotesApp.WebApi.Configurations;
 using System.Reflection;
 
 namespace NotesApp.WebApi
@@ -16,7 +20,7 @@ namespace NotesApp.WebApi
             // Add services to the container.
 
             builder.Services.AddControllers()
-                .AddOData(options => options.EnableQueryFeatures());
+                .AddOData(options => options.EnableQueryFeatures().AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel()));
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
