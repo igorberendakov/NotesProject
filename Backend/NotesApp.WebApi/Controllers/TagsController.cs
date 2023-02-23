@@ -19,7 +19,7 @@ namespace NotesApp.WebApi.Controllers
         /// <returns>Список тэгов, поддерживающий запросы Odata.</returns>
         [HttpGet]
         [EnableQuery]
-        public ActionResult<IQueryable<TagViewDto>> GetAsync()
+        public ActionResult<IQueryable<TagViewDto>> Get()
         {
             return Ok(_service.GetQueryable());
         }

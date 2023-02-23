@@ -20,7 +20,7 @@ namespace NotesApp.WebApi.Controllers
         /// <response code="200">Список заметок.</response>
         [HttpGet]
         [EnableQuery]
-        public ActionResult<IQueryable<NoteViewDto>> GetAsync()
+        public ActionResult<IQueryable<NoteViewDto>> Get()
         {
             return Ok(_service.GetQueryable());
         }

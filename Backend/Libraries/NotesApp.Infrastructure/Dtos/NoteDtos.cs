@@ -6,6 +6,6 @@ namespace NotesApp.Infrastructure.Dtos
     {
         public IEnumerable<TagViewDto> Tags { get; set; } = null!;
     };
-    public record NoteCreateDto([Required][MaxLength(30)] string Title, [Required][MaxLength(200)] string Text, IEnumerable<Guid>? TagGuids = default);
-    public record NoteUpdateDto([Required] Guid Id, [MaxLength(30)] string Title, [MaxLength(200)] string Text, IEnumerable<Guid>? TagGuids = default);
+    public record NoteCreateDto(string Title, string Text, IEnumerable<Guid>? TagGuids = default);
+    public record NoteUpdateDto(Guid Id, string Title, string Text, IEnumerable<Guid>? TagGuids = default);
 }

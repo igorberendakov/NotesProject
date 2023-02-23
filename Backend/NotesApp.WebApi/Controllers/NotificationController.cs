@@ -19,7 +19,7 @@ namespace NotesApp.WebApi.Controllers
         /// <returns>Список напоминаний, поддерживающий запросы Odata.</returns>
         [HttpGet]
         [EnableQuery]
-        public ActionResult<IQueryable<NotificationViewDto>> GetAsync()
+        public ActionResult<IQueryable<NotificationViewDto>> Get()
         {
             return Ok(_service.GetQueryable());
         }
