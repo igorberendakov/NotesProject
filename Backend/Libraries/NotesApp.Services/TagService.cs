@@ -49,12 +49,12 @@ namespace NotesApp.Services
             return entities.UseAsDataSource(_mapper.ConfigurationProvider).For<TagViewDto>();
         }
 
-        public async Task<bool> AddTagToNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
+        public async Task<bool> AddTagToNoteAsync(NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
         {
             return await _repository.AddTagToNoteAsync(noteTagDto.NoteId, noteTagDto.TagId, cancellationToken);
         }
 
-        public async Task<bool> RemoveTagFromNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveTagFromNoteAsync(NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
         {
             return await _repository.RemoveTagFromNoteAsync(noteTagDto.NoteId, noteTagDto.TagId, cancellationToken);
         }
