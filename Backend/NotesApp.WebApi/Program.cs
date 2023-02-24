@@ -1,3 +1,4 @@
+using AutoMapper.Extensions.ExpressionMapping;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.OData;
@@ -23,7 +24,8 @@ namespace NotesApp.WebApi
             builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
                 .AddOData(options => options
                     .EnableQueryFeatures()
-                    .AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel()));
+                    //.AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel())
+                    );
 
             builder.Services.AddFluentValidationAutoValidation()
                 .AddValidatorsFromAssemblyContaining<NoteCreateValidator>();
@@ -44,7 +46,11 @@ namespace NotesApp.WebApi
             builder.Services.AddNotesDbContext(builder.Configuration.GetConnectionString("NotesDbConnection")!);
             builder.Services.AddRepositories();
             builder.Services.AddServices();
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddAutoMapper(options =>
+            {
+                options.AddExpressionMapping();
+            },
+            AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 

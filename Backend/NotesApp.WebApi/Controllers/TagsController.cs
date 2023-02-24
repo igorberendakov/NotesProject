@@ -5,6 +5,8 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TagsController : ControllerBase
     {
         private readonly ITagService _service;
@@ -35,13 +37,25 @@ namespace NotesApp.WebApi.Controllers
             return Ok(await _service.CreateTagAsync(tagCreateDto, cancellationToken));
         }
         /// <summary>
+        /// Добавление привязки тэга к заметке.
+        /// </summary>
+        /// <param name="noteTagDto">Идентификаторы заметки и тэга.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно привязан к заметке.</response>
+        [HttpPost("NoteTag")]
+        public async Task<ActionResult> PostNoteTagAsync([FromBody] NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
+        {
+            await _service.AddTagToNote(noteTagDto, cancellationToken);
+
+            return Ok();
+        }
+        /// <summary>
         /// Изменение данных тэга.
         /// </summary>
         /// <param name="tagUpdateDto">Модель тэга, содержащая необходимые для изменения тэга данные.</param>
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Тэг успешно изменен.</response>
         /// <response code="404">Тэг с данным идентификатором не найден.</response>
-        [Route("[controller]/Put")]
         [HttpPut]
         public async Task<ActionResult> PutAsync([FromBody] TagUpdateDto tagUpdateDto, CancellationToken cancellationToken = default)
         {
@@ -61,11 +75,29 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Тэг успешно удалена.</response>
         /// <response code="204">Тэг не существует.</response>
-        [Route("[controller]/Delete")]
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
         {
             var result = await _service.DeleteTagAsync(id, cancellationToken);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NoContent();
+        }
+        /// <summary>
+        /// Удаление тэга.
+        /// </summary>
+        /// <param name="noteTagDto">Идентификаторы заметки и тэга.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <response code="200">Тэг успешно откреплен от заметки.</response>
+        /// <response code="204">Тэг не привязан к заметке.</response>
+        [HttpDelete("NoteTag")]
+        public async Task<ActionResult> DeleteNoteTagAsync([FromBody] NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _service.RemoveTagFromNote(noteTagDto, cancellationToken);
 
             if (result)
             {

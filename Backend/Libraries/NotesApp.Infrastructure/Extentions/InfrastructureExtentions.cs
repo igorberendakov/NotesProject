@@ -6,6 +6,7 @@ using NotesApp.Domain.Entities;
 using NotesApp.Infrastructure.DbConfiguration;
 using NotesApp.Infrastructure.Dtos;
 using NotesApp.Infrastructure.Repository;
+using NotesApp.Infrastructure.Repository.Abstractions;
 using NotesApp.Infrastructure.Validation.Validators;
 
 namespace NotesApp.Infrastructure.Extentions
@@ -33,24 +34,8 @@ namespace NotesApp.Infrastructure.Extentions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Note>, GenericRepository<Note>>();
-            services.AddScoped<IRepository<Tag>, GenericRepository<Tag>>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IRepository<Notification>, GenericRepository<Notification>>();
-
-            return services;
-        }
-        /// <summary>
-        /// Добавление валидаторов dto в коллекцию сервисов.
-        /// </summary>
-        /// <param name="services">Коллекция сервисов.</param>
-        /// <returns>Коллекция сервисов.</returns>
-        public static IServiceCollection AddValidators(this IServiceCollection services)
-        {
-            services.AddTransient<AbstractValidator<NoteCreateDto>, NoteCreateValidator>();
-            services.AddTransient<AbstractValidator<NoteUpdateDto>, NoteUpdateValidator>();
-            services.AddTransient<AbstractValidator<TagCreateDto>, TagCreateValidator>();
-            services.AddTransient<AbstractValidator<TagUpdateDto>, TagUpdateValidator>();
-            services.AddTransient<AbstractValidator<NotificationCreateDto>, NotificationCreateValidator>();
-            services.AddTransient<AbstractValidator<NotificationUpdateDto>, NotificationUpdateValidator>();
 
             return services;
         }

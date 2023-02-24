@@ -30,5 +30,19 @@ namespace NotesApp.Services.Abstractions
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <returns>true - если произведено удаление, false - если заметки не существует.</returns>
         Task<bool> DeleteTagAsync(Guid id, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Добавление привязки тэга к заметке.
+        /// </summary>
+        /// <param name="noteTagDto"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<bool> AddTagToNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Удаление привязки тэга к заметке.
+        /// </summary>
+        /// <param name="noteTagDto"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<bool> RemoveTagFromNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
     }
 }

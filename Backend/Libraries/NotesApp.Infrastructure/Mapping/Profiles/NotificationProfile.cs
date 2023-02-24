@@ -2,7 +2,7 @@
 using NotesApp.Domain.Entities;
 using NotesApp.Infrastructure.Dtos;
 
-namespace NotesApp.Infrastructure.MappingProfiles
+namespace NotesApp.Infrastructure.Mapping.Profiles
 {
     public class NotificationProfile : Profile
     {
@@ -14,7 +14,8 @@ namespace NotesApp.Infrastructure.MappingProfiles
                 dest => dest.Note,
                 opt => opt.MapFrom(src => src.Note));
             CreateMap<NotificationCreateDto, Notification>();
-            CreateMap<NotificationUpdateDto, Notification>();
+            CreateMap<NotificationUpdateDto, Notification>()
+                .ForMember(dest=>dest.NoteId,opt=>opt.Ignore());
         }
     }
 }

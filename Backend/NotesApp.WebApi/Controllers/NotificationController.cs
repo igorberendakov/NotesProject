@@ -5,6 +5,8 @@ using NotesApp.Services.Abstractions;
 
 namespace NotesApp.WebApi.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _service;
@@ -41,7 +43,6 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Напоминание успешно изменено.</response>
         /// <response code="404">Напоминание с данным идентификатором не найдено.</response>
-        [Route("[controller]/Put")]
         [HttpPut]
         public async Task<ActionResult> PutAsync([FromBody] NotificationUpdateDto notificationUpdateDto, CancellationToken cancellationToken = default)
         {
@@ -61,7 +62,6 @@ namespace NotesApp.WebApi.Controllers
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         /// <response code="200">Напоминание успешно удалено.</response>
         /// <response code="204">Напоминание не существует.</response>
-        [Route("[controller]/Delete")]
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
         {

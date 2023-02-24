@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace NotesApp.Infrastructure.Dtos
+﻿namespace NotesApp.Infrastructure.Dtos
 {
     public record NotificationViewDto(Guid Id, DateTime TimeBinding)
     {

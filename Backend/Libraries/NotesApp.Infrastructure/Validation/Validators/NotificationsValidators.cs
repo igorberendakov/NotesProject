@@ -14,7 +14,7 @@ namespace NotesApp.Infrastructure.Validation.Validators
             RuleFor(x => x.TimeBinding)
                 .NotNull()
                 .NotEmpty()
-                .GreaterThan(DateTime.Now);
+                .GreaterThan(DateTime.UtcNow);
         }
     }
 
@@ -29,7 +29,7 @@ namespace NotesApp.Infrastructure.Validation.Validators
             RuleFor(x => x.TimeBinding)
                 .NotNull()
                 .NotEmpty()
-                .GreaterThan(DateTime.Now);
+                .GreaterThan(DateTime.UtcNow);
         }
     }
 }
