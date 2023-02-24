@@ -28,21 +28,21 @@ namespace NotesApp.Services.Abstractions
         /// </summary>
         /// <param name="id">Идентификатор тэга.</param>
         /// <param name="cancellationToken">Токен прерывания операции.</param>
-        /// <returns>true - если произведено удаление, false - если заметки не существует.</returns>
+        /// <returns>true - если произведено удаление, false - если тэга не существует.</returns>
         Task<bool> DeleteTagAsync(Guid id, CancellationToken cancellationToken = default);
         /// <summary>
         /// Добавление привязки тэга к заметке.
         /// </summary>
-        /// <param name="noteTagDto"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<bool> AddTagToNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
+        /// <param name="noteTagDto">Модель привязки тэга к заметке.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <returns>true - привязка произведена успешно, false - привязка уже существует.</returns>
+        Task<bool> AddTagToNoteAsync(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
         /// <summary>
         /// Удаление привязки тэга к заметке.
         /// </summary>
-        /// <param name="noteTagDto"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<bool> RemoveTagFromNote(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
+        /// <param name="noteTagDto">Модель привязки тэга к заметке.</param>
+        /// <param name="cancellationToken">Токен прерывания операции.</param>
+        /// <returns>true - если произведено удаление привязки, false - если привязки не существует.</returns>
+        Task<bool> RemoveTagFromNoteAsync(NoteTagDto noteTagDto, CancellationToken cancellationToken = default);
     }
 }

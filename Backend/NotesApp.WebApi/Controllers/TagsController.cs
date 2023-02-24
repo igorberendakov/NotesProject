@@ -45,7 +45,7 @@ namespace NotesApp.WebApi.Controllers
         [HttpPost("NoteTag")]
         public async Task<ActionResult> PostNoteTagAsync([FromBody] NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
         {
-            await _service.AddTagToNote(noteTagDto, cancellationToken);
+            await _service.AddTagToNoteAsync(noteTagDto, cancellationToken);
 
             return Ok();
         }
@@ -97,7 +97,7 @@ namespace NotesApp.WebApi.Controllers
         [HttpDelete("NoteTag")]
         public async Task<ActionResult> DeleteNoteTagAsync([FromBody] NoteTagDto noteTagDto, CancellationToken cancellationToken = default)
         {
-            var result = await _service.RemoveTagFromNote(noteTagDto, cancellationToken);
+            var result = await _service.RemoveTagFromNoteAsync(noteTagDto, cancellationToken);
 
             if (result)
             {
