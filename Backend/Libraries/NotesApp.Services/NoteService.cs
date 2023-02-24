@@ -55,7 +55,7 @@ namespace NotesApp.Services
 
             if (entity == null)
             {
-                _logger.LogWarning("Попытка изменения несуществующей заметки.");
+                _logger.LogWarning("Попытка изменения несуществующей заметки, запрашиваемый идентификатор: {NoteId}.", noteUpdateDto.Id);
 
                 return false;
             }

@@ -4,11 +4,11 @@ using NotesApp.Domain.Abstractions;
 
 namespace NotesApp.Infrastructure.Repository
 {
-    internal class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        private readonly IDbContext _dbContext;
-        private readonly DbSet<TEntity> _dbSet;
-        private readonly ILogger<GenericRepository<TEntity>> _logger;
+        private protected readonly IDbContext _dbContext;
+        private protected readonly DbSet<TEntity> _dbSet;
+        private protected readonly ILogger<GenericRepository<TEntity>> _logger;
 
         public GenericRepository(IDbContext dbContext, ILogger<GenericRepository<TEntity>> logger)
         {
@@ -40,7 +40,7 @@ namespace NotesApp.Infrastructure.Repository
 
         public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public virtual IQueryable<TEntity> GetQueryable()

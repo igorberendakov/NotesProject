@@ -1,7 +1,12 @@
+using AutoMapper.Extensions.ExpressionMapping;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NotesApp.Infrastructure.Extentions;
+using NotesApp.Infrastructure.Filters;
+using NotesApp.Infrastructure.Validation.Validators;
 using NotesApp.Services.Extentions;
 using NotesApp.WebApi.Configurations;
 using System.Reflection;
@@ -16,10 +21,14 @@ namespace NotesApp.WebApi
 
             // Add services to the container.
 
-            builder.Services.AddControllers()
+            builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
                 .AddOData(options => options
-                .EnableQueryFeatures()
-                .AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel()));
+                    .EnableQueryFeatures()
+                    //.AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel())
+                    );
+
+            builder.Services.AddFluentValidationAutoValidation()
+                .AddValidatorsFromAssemblyContaining<NoteCreateValidator>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -37,7 +46,11 @@ namespace NotesApp.WebApi
             builder.Services.AddNotesDbContext(builder.Configuration.GetConnectionString("NotesDbConnection")!);
             builder.Services.AddRepositories();
             builder.Services.AddServices();
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddAutoMapper(options =>
+            {
+                options.AddExpressionMapping();
+            },
+            AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 

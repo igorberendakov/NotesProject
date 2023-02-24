@@ -56,12 +56,15 @@ namespace NotesApp.Services
 
             if (entity == null)
             {
-                _logger.LogWarning("Попытка изменения несуществующего напоминания.");
+                _logger.LogWarning("Попытка изменения несуществующего напоминания, запрашиваемый идентификатор: {NotificationId}.", notificationUpdateDto.Id);
 
                 return false;
             }
 
-            return await _repository.UpdateAsync(_mapper.Map<Notification>(notificationUpdateDto), cancellationToken);
+            var changedEntity = _mapper.Map<Notification>(notificationUpdateDto);
+            changedEntity.NoteId = entity.NoteId;
+
+            return await _repository.UpdateAsync(changedEntity, cancellationToken);
         }
     }
 }
