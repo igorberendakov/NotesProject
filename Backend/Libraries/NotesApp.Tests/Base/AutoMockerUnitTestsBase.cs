@@ -1,8 +1,6 @@
 ﻿using AutoFixture;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.AutoMock;
-using NotesApp.Infrastructure.DbConfiguration;
 
 namespace UnitTests.Base
 {

@@ -12,6 +12,10 @@ namespace NotesApp.Domain.Entities
         /// </summary>
         public Guid Id { get; set; }
         /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        public Guid UserId { get; set; }
+        /// <summary>
         /// Текст тэга.
         /// </summary>
         public string Text { get; set; } = null!;

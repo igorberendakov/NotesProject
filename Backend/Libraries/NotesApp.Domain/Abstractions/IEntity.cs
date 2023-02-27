@@ -9,5 +9,9 @@
         /// Идентификатор сущности.
         /// </summary>
         Guid Id { get; set; }
+        /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        Guid UserId { get; set; }
     }
 }

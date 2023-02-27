@@ -15,6 +15,7 @@ namespace NotesApp.Services.Extentions
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             return services;
         }

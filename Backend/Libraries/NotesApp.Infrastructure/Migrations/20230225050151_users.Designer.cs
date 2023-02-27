@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotesApp.Infrastructure.Migrations
 {
     [DbContext(typeof(NotesDbContext))]
-    [Migration("20230221032735_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230225050151_users")]
+    partial class Users
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,8 +42,15 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_note");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_note_user_id");
 
                     b.ToTable("note", (string)null);
                 });
@@ -57,6 +64,9 @@ namespace NotesApp.Infrastructure.Migrations
                     b.Property<Guid>("TagId")
                         .HasColumnType("uuid")
                         .HasColumnName("tag_id");
+
+                    b.HasKey("NoteId", "TagId")
+                        .HasName("pk_note_tag");
 
                     b.HasIndex("TagId")
                         .HasDatabaseName("ix_note_tag_tag_id");
@@ -79,15 +89,22 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("note_id");
 
-                    b.Property<DateTime?>("TimeBinding")
+                    b.Property<DateTime>("TimeBinding")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("time_binding");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_notification");
 
                     b.HasIndex("NoteId")
                         .HasDatabaseName("ix_notification_note_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_notification_user_id");
 
                     b.ToTable("notification", (string)null);
                 });
@@ -104,23 +121,60 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_tag");
 
-                    b.ToTable("tag", (string)null);
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_tag_user_id");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("dc5e1634-e8d6-4d4a-b644-4b1fe400003e"),
-                            Text = "TestTag"
-                        });
+                    b.ToTable("tag", (string)null);
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("login");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user");
+
+                    b.HasIndex("Login")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_login");
+
+                    b.ToTable("user", (string)null);
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.Note", b =>
+                {
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_note_user_user_id");
                 });
 
             modelBuilder.Entity("NotesApp.Domain.Entities.NoteTag", b =>
                 {
                     b.HasOne("NotesApp.Domain.Entities.Note", "Note")
-                        .WithMany()
+                        .WithMany("NoteTags")
                         .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -147,7 +201,29 @@ namespace NotesApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_notification_note_note_id");
 
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notification_user_user_id");
+
                     b.Navigation("Note");
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.Tag", b =>
+                {
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_tag_user_user_id");
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.Note", b =>
+                {
+                    b.Navigation("NoteTags");
                 });
 #pragma warning restore 612, 618
         }

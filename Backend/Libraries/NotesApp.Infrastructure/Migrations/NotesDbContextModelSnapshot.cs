@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NotesApp.Infrastructure.DbConfiguration;
+using NotesApp.Infrastructure.Configurations.DbConfiguration;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -39,8 +39,15 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_note");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_note_user_id");
 
                     b.ToTable("note", (string)null);
                 });
@@ -79,15 +86,22 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("note_id");
 
-                    b.Property<DateTime?>("TimeBinding")
+                    b.Property<DateTime>("TimeBinding")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("time_binding");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_notification");
 
                     b.HasIndex("NoteId")
                         .HasDatabaseName("ix_notification_note_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_notification_user_id");
 
                     b.ToTable("notification", (string)null);
                 });
@@ -104,10 +118,54 @@ namespace NotesApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_tag");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_tag_user_id");
+
                     b.ToTable("tag", (string)null);
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("login");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user");
+
+                    b.HasIndex("Login")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_login");
+
+                    b.ToTable("user", (string)null);
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.Note", b =>
+                {
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_note_user_user_id");
                 });
 
             modelBuilder.Entity("NotesApp.Domain.Entities.NoteTag", b =>
@@ -140,7 +198,24 @@ namespace NotesApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_notification_note_note_id");
 
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notification_user_user_id");
+
                     b.Navigation("Note");
+                });
+
+            modelBuilder.Entity("NotesApp.Domain.Entities.Tag", b =>
+                {
+                    b.HasOne("NotesApp.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_tag_user_user_id");
                 });
 
             modelBuilder.Entity("NotesApp.Domain.Entities.Note", b =>

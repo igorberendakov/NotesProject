@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NotesApp.Domain.Abstractions;
+using NotesApp.Infrastructure.Configurations.Authentication.Models;
 
 namespace NotesApp.Infrastructure.Repository
 {
@@ -9,9 +10,11 @@ namespace NotesApp.Infrastructure.Repository
         private protected readonly IDbContext _dbContext;
         private protected readonly DbSet<TEntity> _dbSet;
         private protected readonly ILogger<GenericRepository<TEntity>> _logger;
+        private protected readonly Guid _currentUserId;
 
-        public GenericRepository(IDbContext dbContext, ILogger<GenericRepository<TEntity>> logger)
+        public GenericRepository(IDbContext dbContext, ILogger<GenericRepository<TEntity>> logger, CurrentUser currentUser)
         {
+            _currentUserId = currentUser.UserId!.Value;
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<TEntity>();
             _logger = logger;
@@ -19,6 +22,7 @@ namespace NotesApp.Infrastructure.Repository
 
         public virtual async Task<Guid> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
+            entity.UserId = _currentUserId;
             await _dbSet.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _logger.LogInformation("{Entity} с идентификатором {EntityId} успешно добавлен(а/о).", entity.GetType().Name, entity.Id);
@@ -35,17 +39,17 @@ namespace NotesApp.Infrastructure.Repository
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
+            return await _dbSet.Where(x => x.UserId == _currentUserId).AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _dbSet.Where(x => x.UserId == _currentUserId).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public virtual IQueryable<TEntity> GetQueryable()
         {
-            return _dbSet;
+            return _dbSet.Where(x => x.UserId == _currentUserId).AsNoTracking();
         }
 
         public virtual async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
