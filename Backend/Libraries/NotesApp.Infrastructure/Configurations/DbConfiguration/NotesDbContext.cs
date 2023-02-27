@@ -2,10 +2,11 @@
 using NotesApp.Domain.Abstractions;
 using NotesApp.Domain.Entities;
 
-namespace NotesApp.Infrastructure.DbConfiguration
+namespace NotesApp.Infrastructure.Configurations.DbConfiguration
 {
     public class NotesDbContext : DbContext, IDbContext
     {
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<Tag> Tags { get; } = null!;
         public DbSet<Note> Notes { get; } = null!;
         public DbSet<NoteTag> NoteTags { get; } = null!;
@@ -17,6 +18,21 @@ namespace NotesApp.Infrastructure.DbConfiguration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("user");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+                entity.Property(x => x.Login)
+                    .HasColumnName("login");
+                entity.Property(x => x.PasswordHash)
+                    .HasColumnName("password");
+                entity.HasIndex(x => x.Login)
+                    .IsUnique();
+            });
+
             modelBuilder.Entity<Tag>(entity =>
             {
                 entity.ToTable("tag");
@@ -24,6 +40,11 @@ namespace NotesApp.Infrastructure.DbConfiguration
                 entity.Property(x => x.Id)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("id");
+                entity.Property(x => x.UserId)
+                    .HasColumnName("user_id");
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId);
                 entity.Property(x => x.Text)
                     .HasColumnName("text");
             });
@@ -53,6 +74,11 @@ namespace NotesApp.Infrastructure.DbConfiguration
                 entity.Property(x => x.Id)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("id");
+                entity.Property(x => x.UserId)
+                    .HasColumnName("user_id");
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId);
                 entity.Property(x => x.Title)
                     .HasColumnName("title");
                 entity.Property(x => x.Text)
@@ -66,6 +92,11 @@ namespace NotesApp.Infrastructure.DbConfiguration
                 entity.Property(x => x.Id)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("id");
+                entity.Property(x => x.UserId)
+                    .HasColumnName("user_id");
+                entity.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId);
                 entity.Property(x => x.NoteId)
                     .HasColumnName("note_id");
                 entity.Property(x => x.TimeBinding)

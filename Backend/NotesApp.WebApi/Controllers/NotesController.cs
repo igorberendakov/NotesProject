@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using NotesApp.Infrastructure.Dtos;
 using NotesApp.Services.Abstractions;
+using System.Security.Claims;
 
 namespace NotesApp.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class NotesController : ControllerBase
     {
         private readonly INoteService _service;
@@ -24,6 +27,8 @@ namespace NotesApp.WebApi.Controllers
         [EnableQuery]
         public ActionResult<IQueryable<NoteViewDto>> Get()
         {
+
+
             return Ok(_service.GetQueryable());
         }
         /// <summary>

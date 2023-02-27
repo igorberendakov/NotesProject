@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NotesApp.Domain.Abstractions;
 using NotesApp.Domain.Entities;
-using NotesApp.Infrastructure.DbConfiguration;
+using NotesApp.Infrastructure.Configurations.Authentication.Models;
+using NotesApp.Infrastructure.Configurations.DbConfiguration;
 using NotesApp.Infrastructure.Dtos;
 using NotesApp.Infrastructure.Repository;
 using NotesApp.Infrastructure.Repository.Abstractions;
@@ -18,7 +19,7 @@ namespace NotesApp.Infrastructure.Extentions
         /// </summary>
         /// <param name="services">Коллекция сервисов.</param>
         /// <returns>Коллекция сервисов.</returns>
-        public static IServiceCollection AddNotesDbContext(this IServiceCollection services, string connectionString) 
+        public static IServiceCollection AddNotesDbContext(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<IDbContext, NotesDbContext>(options => options
                 .UseNpgsql(connectionString)
@@ -36,6 +37,17 @@ namespace NotesApp.Infrastructure.Extentions
             services.AddScoped<IRepository<Note>, GenericRepository<Note>>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IRepository<Notification>, GenericRepository<Notification>>();
+
+            return services;
+        }
+        /// <summary>
+        /// Добавление данных о текущем пользователе в коллекцию сервисов.
+        /// </summary>
+        /// <param name="services">Коллекция сервисов.</param>
+        /// <returns>Коллекция сервисов.</returns>
+        public static IServiceCollection AddCurrentUserInfo(this IServiceCollection services)
+        {
+            services.AddScoped<CurrentUser>();
 
             return services;
         }

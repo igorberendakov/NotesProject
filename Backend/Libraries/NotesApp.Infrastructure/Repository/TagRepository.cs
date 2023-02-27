@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
 using NotesApp.Domain.Abstractions;
 using NotesApp.Domain.Entities;
+using NotesApp.Infrastructure.Configurations.Authentication.Models;
 using NotesApp.Infrastructure.Repository.Abstractions;
 
 namespace NotesApp.Infrastructure.Repository
 {
     public class TagRepository : GenericRepository<Tag>, ITagRepository
     {
-        public TagRepository(IDbContext dbContext, ILogger<GenericRepository<Tag>> logger) : base(dbContext, logger)
+        public TagRepository(IDbContext dbContext, ILogger<GenericRepository<Tag>> logger, CurrentUser currentUser) : base(dbContext, logger, currentUser)
         {
         }
 
