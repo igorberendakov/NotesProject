@@ -54,6 +54,7 @@ namespace NotesApp.Infrastructure.Repository
 
         public virtual async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
+            entity.UserId = _currentUserId;
             _dbSet.Update(entity);
             var result = await _dbContext.SaveChangesAsync(cancellationToken) > 0;
 
