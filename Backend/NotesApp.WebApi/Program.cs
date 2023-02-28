@@ -29,6 +29,14 @@ namespace NotesApp.WebApi
                     .EnableQueryFeatures()
                     //.AddRouteComponents("api", ODataEdmModelBuilder.GetEdmModel())
                     );
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
 
             builder.Services.AddFluentValidationAutoValidation()
                 .AddValidatorsFromAssemblyContaining<NoteCreateValidator>();
@@ -77,7 +85,7 @@ namespace NotesApp.WebApi
             builder.Services.AddRepositories();
             builder.Services.AddServices();
             builder.Services.AddCurrentUserInfo();
-            builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
+            builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             builder.Services.AddAutoMapper(options =>
             {
                 options.AddExpressionMapping();
@@ -106,6 +114,8 @@ namespace NotesApp.WebApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseAuthentication();
 
