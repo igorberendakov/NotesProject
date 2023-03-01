@@ -1,0 +1,38 @@
+<div class="container-lg" style="width: 400px;">
+    <div class="form-group mt-2">
+        <label>Заголовок заметки</label>
+        <input [(ngModel)]="noteCreateData.title" #title="ngModel" type="text" class="form-control mt-2"
+            placeholder="Введите заголовок заметки" required maxlength="30">
+        <div *ngIf="title.invalid" class="alert">
+            <div *ngIf="title.errors?.['required']">
+                Требуется заголовок.
+            </div>
+            <div *ngIf="title.errors?.['maxlength']">
+                Длина заголовка не должна превышать 30 символов.
+            </div>
+        </div>
+        <label class="mt-2">Текст заметки</label>
+        <input [(ngModel)]="noteCreateData.text" #text="ngModel" type="text" class="form-control mt-2"
+            placeholder="Введите текст заметки" required maxlength="200">
+        <div *ngIf="text.invalid" class="alert">
+            <div *ngIf="text.errors?.['required']">
+                Требуется текст заметки.
+            </div>
+            <div *ngIf="text.errors?.['maxlength']">
+                Длина текста не должна превышать 200 символов.
+            </div>
+        </div>
+    </div>
+    <div class="mt-2 w-100 align-items-center">Тэги</div>
+    <div class="d-flex justify-content-start overflow-auto w-100">
+        <div class="badge" *ngFor="let tag of tags">
+            <span>{{tag.text}}</span>
+            <input type="checkbox" (change)="eventCheck($event, tag.id)" />
+        </div>
+    </div>
+    <div class="d-flex justify-content-evenly mt-2">
+        <button type="submit" [disabled]="title.invalid || text.invalid" (click)="createNote()"
+            class="btn btn-light">Ок</button>
+        <button type="cancel" (click)="close()" class="btn btn-light">Отмена</button>
+    </div>
+</div>

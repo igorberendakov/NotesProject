@@ -1,0 +1,35 @@
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-lg-3">
+            <a ngbNavLink id="item-add-card" class="card p-3 mb-3" (click)="addTag()">
+                +
+            </a>
+        </div>
+        <div *ngIf="error" class="col-lg-3">
+            <div ngbNavLink id="error-card" class="card p-3 mb-3">
+                <div id="options">
+                    <i id="opt" class="bi bi-x" (click)="clearErrors()"></i>
+                </div>
+                {{error}}
+            </div>
+        </div>
+        <div *ngIf="tags.length == 0" class="col-lg-3">
+            <div ngbNavLink id="info-card" class="card p-3 mb-3">
+                Нет тэгов
+            </div>
+        </div>
+        <div class="col-lg-3" *ngFor="let tag of tags">
+            <div id="item-card" class="card p-3 mb-3">
+                <div id="options">
+                    <i id="opt" class="bi bi-gear" (click)="updateTag(tag)"></i>
+                    <i id="opt" class="bi bi-trash" (click)="deleteTag(tag.id)"></i>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="ms-2 c-details">
+                        <span>{{tag.text}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
