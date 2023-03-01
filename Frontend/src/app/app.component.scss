@@ -1,0 +1,27 @@
+#tabs .nav-tabs .nav-item.show .nav-link,
+.nav-tabs .hover-effect :hover:not(#logo),
+.nav-tabs .nav-link.active,
+a.hover-effect:hover {
+    color: #ffffff;
+    background-color: rgb(173, 173, 173);
+    border-color: transparent transparent #ffffff;
+    border-radius: 0px !important;
+}
+
+li a {
+    line-height: 40px;
+    font-size: large;
+}
+
+#logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: large;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.nav-tabs {
+    background-color: rgb(83, 83, 83);
+}
