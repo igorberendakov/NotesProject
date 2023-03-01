@@ -56,11 +56,6 @@ namespace NotesApp.Services
             return new LoginResult(true, token, "Авторизация выполнена успешно.");
         }
 
-        public Task LogoutUserAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<LoginResult> RegisterUserAsync(UserDto userDto, CancellationToken cancellationToken = default)
         {
             var userExist = await _users.AnyAsync(x => x.Login == userDto.Login, cancellationToken);
