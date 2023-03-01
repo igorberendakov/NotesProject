@@ -7,7 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./authentication.component.scss', '../common-component-styles.scss']
 })
 export class AuthenticationComponent {
-  userLoginData: any = {}
+  userLoginData: any = {};
+  error: any;
 
   constructor(private authService: AuthService) {
   }
@@ -18,7 +19,14 @@ export class AuthenticationComponent {
         next: (res) => {
           localStorage.setItem("token", res.token)
         },
-        error: (err) => console.error(err)
+        error: (err) => {
+          if (err.error.message) {
+            this.error = err.error.message
+          }
+          else {
+            this.error = "Ошибка при регистрации. Попробуйте позже."
+          }
+        }
       })
   }
 
@@ -28,7 +36,15 @@ export class AuthenticationComponent {
         next: (res) => {
           localStorage.setItem("token", res.token)
         },
-        error: (err) => console.error(err)
+        error: (err) => {
+          console.log(err);
+          if (err.error.message) {
+            this.error = err.error.message
+          }
+          else {
+            this.error = "Ошибка при входе. Попробуйте позже."
+          }
+        }
       })
   }
 }
