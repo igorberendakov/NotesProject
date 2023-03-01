@@ -17,9 +17,5 @@ namespace NotesApp.Services.Abstractions
         /// <param name="userDto">Модель данных для входа пользователя.</param>
         /// <param name="cancellationToken">Токен прерывания операции.</param>
         Task<LoginResult> LoginUserAsync(UserDto userDto, CancellationToken cancellationToken = default);
-        /// <summary>
-        /// Выход из системы.
-        /// </summary>
-        Task LogoutUserAsync();
     }
 }

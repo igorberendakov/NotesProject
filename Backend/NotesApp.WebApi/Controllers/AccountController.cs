@@ -45,13 +45,5 @@ namespace NotesApp.WebApi.Controllers
 
             return Ok(result);
         }
-
-        [HttpGet("Logout")]
-        public async Task<IActionResult> LogoutAsync() 
-        {
-            await _service.LogoutUserAsync();
-
-            return Ok();
-        }
     }
 }
