@@ -1,0 +1,19 @@
+<div class="container-lg" style="width: 400px;">
+    <div class="form-group mt-2">
+        <label>Текст тэга</label>
+        <input [(ngModel)]="tagCreateData.text" #text="ngModel" type="text" class="form-control mt-2"
+            placeholder="Введите текст заметки" required maxlength="15">
+        <div *ngIf="text.invalid" class="alert">
+            <div *ngIf="text.errors?.['required']">
+                Требуется текст тэга.
+            </div>
+            <div *ngIf="text.errors?.['maxlength']">
+                Длина текста не должна превышать 15 символов.
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-evenly mt-2">
+        <button type="submit" [disabled]="text.invalid" (click)="createTag()" class="btn btn-light">Ок</button>
+        <button type="cancel" (click)="close()" class="btn btn-light">Отмена</button>
+    </div>
+</div>

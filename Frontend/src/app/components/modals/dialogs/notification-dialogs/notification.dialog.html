@@ -1,0 +1,16 @@
+<div class="container-lg" style="width: 400px;">
+    <div class="form-group mt-2">
+        <label>Время уведомления</label>
+        <input [(ngModel)]="notificationData.timeBinding" #dateTime="ngModel" type="datetime-local" class="form-control"
+            required>
+        <div *ngIf="dateTime.invalid" class="alert">
+            <div *ngIf="dateTime.errors?.['required']">
+                Требуется время уведомления.
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-evenly mt-2">
+        <button type="submit" [disabled]="dateTime.invalid" (click)="confirm()" class="btn btn-light">Ок</button>
+        <button type="cancel" (click)="close()" class="btn btn-light">Отмена</button>
+    </div>
+</div>
