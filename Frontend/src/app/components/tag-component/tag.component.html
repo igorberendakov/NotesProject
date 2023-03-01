@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-lg-3" *ngFor="let tag of tags">
-            <div id="item-card" class="card p-3 mb-3">
+            <div id="item-card" class="card tag p-3 mb-3">
                 <div id="options">
                     <i id="opt" class="bi bi-gear" (click)="updateTag(tag)"></i>
                     <i id="opt" class="bi bi-trash" (click)="deleteTag(tag.id)"></i>

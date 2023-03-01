@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'NotesApp';
   activeTab = 4;
 
@@ -14,7 +14,16 @@ export class AppComponent {
 
   }
 
-  logout(){
+  ngOnInit(): void {
+    if (this.authService.loggedIn()) {
+      this.activeTab = 1
+    }
+    else {
+      this.activeTab = 4
+    }
+  }
+
+  logout() {
     this.authService.logout();
     this.activeTab = 4;
   }
